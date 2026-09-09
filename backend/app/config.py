@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     environment: str = "development"
     log_level: str = "INFO"
     
-    gemini_api_key: str = "AQ.Ab8RN6IJuLFCqhAafULmkoywdqQP-oTw-UNBEgidNQ1kXaYKjA"
+    gemini_api_key: str = ""
 
     chroma_path: str = "./data/chroma"
     documents_path: str = "./data/documents"
