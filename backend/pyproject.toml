@@ -1,0 +1,10 @@
+[project]
+name = "docuops-backend"
+version = "0.1.0"
+description = "Enterprise RAG assistant backend"
+requires-python = ">=3.11"
+dependencies = [
+    "langchain-community>=0.4.2",
+    "pypdf>=6.18.0",
+    "pytest>=9.1.1",
+]

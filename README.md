@@ -386,5 +386,5 @@ Evaluation
 
 # Status
 
-🚧 **Under Development (2 days only)**
+🚧 **Under Development (two more days)**
 

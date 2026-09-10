@@ -1,11 +1,13 @@
-from pathlib import Path
+from app.services.document_service import DocumentService
 from fastapi import APIRouter, UploadFile, File, HTTPException
-
-from app.config import settings
 router = APIRouter(prefix="/documents", tags=["Documents"])
 
+from app.schemas.document import DocumentUploadResponse
+document_service = DocumentService()
 
-@router.post("/upload")
+
+
+@router.post("/upload", response_model=DocumentUploadResponse)
 async def upload_document(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
         raise HTTPException(
@@ -13,18 +15,9 @@ async def upload_document(file: UploadFile = File(...)):
             detail="Only PDF files are supported",
         )
 
-    documents_path = Path(settings.documents_path)
-    documents_path.mkdir(parents=True, exist_ok=True)
-
-    file_path = documents_path / file.filename
-
-    contents = await file.read()
-
-    with open(file_path, "wb") as buffer:
-        buffer.write(contents)
+    document = await document_service.save_document(file)
 
     return {
         "message": "Document uploaded successfully",
-        "filename": file.filename,
-        "path": str(file_path),
+        "document": document
     }
