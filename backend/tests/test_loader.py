@@ -1,12 +1,13 @@
 # from app.rag.loader import load_pdf
-from app.rag.loader import load_pdf
+# from app.rag.loader import load_pdf
+from app.pipelines.ingestion_pipeline import ingest_document
 
 
 PDF_PATH = "data/documents/hr_document.pdf"
 
 
 def main():
-    documents = load_pdf(PDF_PATH)
+    documents = ingest_document(PDF_PATH)
 
     print(f"Pages loaded: {len(documents)}")
 

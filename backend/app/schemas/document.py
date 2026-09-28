@@ -5,7 +5,7 @@ class DocumentInfo(BaseModel):
     filename: str
     path: str
     size: int
-    pages: int
+    chunks: int
 
 
 class DocumentUploadResponse(BaseModel):

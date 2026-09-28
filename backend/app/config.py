@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     
     gemini_api_key: str = ""
+    mistral_api_key: str = ""
 
     chroma_path: str = "./data/chroma"
     documents_path: str = "./data/documents"

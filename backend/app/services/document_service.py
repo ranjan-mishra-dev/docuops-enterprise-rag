@@ -26,5 +26,5 @@ class DocumentService:
             "filename": file.filename,
             "path": str(file_path),
             "size": len(contents),
-            "pages": len(documents)
+            "chunks": len(documents)
         }

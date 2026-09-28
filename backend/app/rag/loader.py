@@ -10,7 +10,6 @@ def load_pdf(file_path: str | Path) -> list[Document]:
     """
 
     file_path = Path(file_path)
-
     if not file_path.exists():
         raise FileNotFoundError(f"PDF not found: {file_path}")
 
@@ -18,7 +17,6 @@ def load_pdf(file_path: str | Path) -> list[Document]:
         raise ValueError("Only PDF files are supported")
 
     loader = PyPDFLoader(str(file_path))
-
     documents = loader.load()
 
     return documents
