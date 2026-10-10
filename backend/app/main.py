@@ -5,14 +5,15 @@ from app.config import settings
 from app.logging_config import setup_logging
 
 from app.api.routes.documents import router as documents_router
+from app.api.routes import documents, chat
+
 setup_logging()
 
 logger = logging.getLogger(__name__)
 app = FastAPI(title=settings.app_name)
 
 app.include_router(documents_router, prefix="/api")
-
-
+app.include_router(chat.router)
 
 @app.get("/")
 def root():

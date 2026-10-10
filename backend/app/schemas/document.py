@@ -1,13 +1,14 @@
 from pydantic import BaseModel
 
 
-class DocumentInfo(BaseModel):
-    filename: str
-    path: str
-    size: int
-    chunks: int
+# class DocumentInfo(BaseModel):
+#     filename: str
+#     path: str
+#     size: int
+#     chunks: int
 
 
 class DocumentUploadResponse(BaseModel):
+    filename: str
     message: str
-    document: DocumentInfo
+    chunks: int

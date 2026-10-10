@@ -37,7 +37,7 @@ def add_chunks(chunks: list[Document]) -> int:
 
     vector_store.add_documents(chunks)
     '''
-    what this add document doing: ChromaDB, through LangChain, Takes the text from each chunk, Sends it to the Mistral embedding model.
+    what this add_chunks doing: ChromaDB, through LangChain, Takes the text from each chunk, Sends it to the Mistral embedding model.
     Receives a vector for each chunk, Stores the vector, original text, and metadata in the collection.
     '''
 
