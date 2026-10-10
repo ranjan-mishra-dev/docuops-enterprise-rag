@@ -26,19 +26,67 @@ def get_vector_store() -> Chroma:
 
     return vector_store
 
+def document_exist(document_id: str) -> bool:
+    '''using to check whether this chunk already exist or not if yes then update with newone'''
 
-def add_chunks(chunks: list[Document]) -> int:
+    vector_store = get_vector_store()
+    result = vector_store.get(
+        where={"document_id":document_id},
+        limit=1
+    )
+
+    return bool(result['ids'])
+
+    
+
+
+
+def add_chunks(chunks: list[Document], document_id: str) -> int:
     """Embed and store document chunks in ChromaDB."""
+    # print("8.0")
+
 
     if not chunks:
         return 0
 
-    vector_store = get_vector_store()
+    # print("8")
 
-    vector_store.add_documents(chunks)
+    vector_store = get_vector_store()
+    ids = []
+
+    for index, chunk in enumerate(chunks):
+        chunk.metadata["document_id"] = document_id
+        ids.append(f"{document_id}:{index}")
+    
+    # print("9")
+
+    # Stable IDs prevent duplicate records on repeated uploads.
+    vector_store.add_documents(
+        documents=chunks,
+        ids=ids
+    )
+
     '''
     what this add_chunks doing: ChromaDB, through LangChain, Takes the text from each chunk, Sends it to the Mistral embedding model.
     Receives a vector for each chunk, Stores the vector, original text, and metadata in the collection.
     '''
 
     return len(chunks)
+
+
+
+def delete_document(document_id: str) -> int:
+    """Delete all indexed chunks belonging to a document."""
+
+    store = get_vector_store()
+
+    result = store.get(
+        where={"document_id": document_id},
+    )
+
+    ids = result["ids"]
+
+    if ids:
+        store.delete(ids=ids)
+
+    return len(ids)

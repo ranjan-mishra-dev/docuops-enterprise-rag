@@ -23,13 +23,22 @@ async def upload_document(file: UploadFile = File(...)):
                 detail="Only PDF files are supported.",
             )
 
+        # print("1")
         file_path = await document_service.save_document(file)
-        chunks_count = process_document(file_path)
+        # print("4")
+
+        result = process_document(file_path)
+
+        message = (
+            "Document indexed successfully."
+            if result["status"] == "indexed"
+            else "This document already indexed."
+        )
 
         return {
             "filename": file.filename,
-            "message": "Document uploaded and indexed successfully.",
-            "chunks": chunks_count,
+            "message": message,
+            "chunks": result["chunks"],
         }
 
 
