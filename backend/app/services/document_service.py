@@ -4,7 +4,7 @@ from app.config import settings
 from app.pipelines.ingestion_pipeline import ingest_document
 from app.rag.vector_store import add_chunks, document_exist
 import hashlib
-
+from app.services.document_registry import (save_document_record, get_document)
 
 class DocumentService:
 
@@ -17,13 +17,13 @@ class DocumentService:
 
         contents = await file.read()
 
-        print("2")
+        # print("2")
 
 
         with open(file_path, "wb") as buffer:
             buffer.write(contents)
 
-        print("3")
+        # print("3")
 
 
         return file_path
@@ -37,9 +37,20 @@ def process_document(file_path: Path) -> int:
 
     document_id = hashlib.sha256(file_path.read_bytes()).hexdigest()
 
+    # Avoid indexing the same content twice.
     if document_exist(document_id):
+        existing = get_document(document_id)
+        # in case of it register in registery
+        if existing:
+            return {
+                **existing,
+                "status": "already indexed",
+                "chunks": 0
+            }
+        # in case in store in db but not failed during writing in registry
         return {
             "document_id": document_id,
+            "filename": file_path.name,
             "chunks": 0,
             "status": "already_indexed"
         }
@@ -56,7 +67,9 @@ def process_document(file_path: Path) -> int:
     # print("7.1")
 
 
-    return {"document_id": document_id,
-            "chunks": count,
-            "status": "indexed"
-            }
+    return save_document_record(
+        document_id=document_id, 
+        filename=file_path.name, 
+        file_path=str(file_path.resolve()), 
+        chunks=count
+    )
