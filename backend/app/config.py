@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     app_name: str = "DocuOps"
     environment: str = "development"
     log_level: str = "INFO"
+    FRONTEND_URL: str = ""
     
     gemini_api_key: str = ""
     mistral_api_key: str = ""

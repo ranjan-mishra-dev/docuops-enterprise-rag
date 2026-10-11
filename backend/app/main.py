@@ -1,4 +1,5 @@
 import logging
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import FastAPI
 from app.config import settings
@@ -11,6 +12,14 @@ setup_logging()
 
 logger = logging.getLogger(__name__)
 app = FastAPI(title=settings.app_name)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.FRONTEND_URL,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(documents_router, prefix="/api")
 app.include_router(chat.router)
